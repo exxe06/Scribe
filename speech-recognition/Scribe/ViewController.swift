@@ -2,8 +2,8 @@
 //  ViewController.swift
 //  Scribe
 //
-//  Created by exxe on 09/10/2017.
-//  Copyright © 2017 exxe. All rights reserved.
+//  Created by Caleb Stultz on 8/10/16.
+//  Copyright © 2016 Caleb Stultz. All rights reserved.
 //
 
 import UIKit
@@ -11,16 +11,22 @@ import Speech
 import AVFoundation
 
 class ViewController: UIViewController, AVAudioPlayerDelegate {
-
-    @IBOutlet weak var activitySpinner: UIActivityIndicatorView!
-    @IBOutlet weak var transcriptionTextField: UITextView!
     
+    var recordButton: UIButton!
     var audioPlayer: AVAudioPlayer!
     
+    @IBOutlet weak var activitySpinner: UIActivityIndicatorView!
+    @IBOutlet weak var transcriptionTextField: UITextView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         activitySpinner.isHidden = true
+    }
+
+    @IBAction func playBtnIsPressed(_ sender: AnyObject) {
+        activitySpinner.isHidden = false
+        activitySpinner.startAnimating()
+        requestSpeechAuth()
     }
     
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
@@ -41,7 +47,6 @@ class ViewController: UIViewController, AVAudioPlayerDelegate {
                     } catch {
                         print("Error!")
                     }
-                    
                     let recognizer = SFSpeechRecognizer()
                     let request = SFSpeechURLRecognitionRequest(url: path)
                     recognizer?.recognitionTask(with: request) { (result, error) in
@@ -55,10 +60,4 @@ class ViewController: UIViewController, AVAudioPlayerDelegate {
             }
         }
     }
-    @IBAction func playBtnPressed(_ sender: Any) {
-        activitySpinner.isHidden = false
-        activitySpinner.startAnimating()
-        requestSpeechAuth()
-    }
-    
 }
